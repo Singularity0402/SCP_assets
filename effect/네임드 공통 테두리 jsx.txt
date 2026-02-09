@@ -1,0 +1,192 @@
+function ScpUniversalFrame({
+  // 1. [이미지] WebP 경로
+  imageUrl = "https://itimg.kr/3054/SCP/char/SCP001.webp",
+
+  // 2. [데이터] 설정
+  headline = "SCP-001",
+  subtext = "THE GATEKEEPER",
+  affiliation = "UNKNOWN",
+  classification = "KETER",
+  status = "UNCONTAINED",
+  
+  // 3. [테마] 붉은색
+  themeColor = "#ff3333"
+}) { 
+
+  return (
+    <div className="universal-frame-root" style={{ '--theme-color': themeColor }}>
+      {/* 배경 이미지 */}
+      <img src={imageUrl} alt={headline} className="bg-image" />
+      
+      {/* 비주얼 효과 레이어 */}
+      <div className="vignette"></div>
+
+      {/* UI 레이어 (풀 프레임 컨테이너) */}
+      <div className="ui-full-frame">
+        
+        {/* [1] 좌측 상단: 시스템 상태 */}
+        <div className="hud-group top-left">
+          <div className="system-status-row">
+            <div className="status-dot"></div>
+            <span>MEMETIC KILL AGENT: ACTIVE</span>
+          </div>
+        </div>
+
+        {/* [2] 우측 상단: 핵심 정보 */}
+        <div className="hud-group top-right">
+          <div className="headline-box">
+            <div className="header-label">DATABASE ENTRY //</div>
+            <div className="headline-row">
+              <div className="typing-wrapper">
+                <span className="headline-text">{headline}</span>
+              </div>
+              <span className="cursor">_</span>
+            </div>
+            <div className="classification-row">
+              CLASS: <span className="highlight">{classification}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* [3] 좌측 하단: 보조 정보 */}
+        <div className="hud-group bottom-left">
+          <div className="info-list">
+            <div className="info-item">
+              <span className="label">ALIAS //</span>
+              <span className="value">{subtext}</span>
+            </div>
+            <div className="info-item">
+              <span className="label">GROUP //</span>
+              <span className="value">{affiliation}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* [4] 우측 하단: 상태 정보 (Veo 가림막) */}
+        <div className="hud-group bottom-right-armor">
+          <div className="status-box">
+            <span className="label">STATUS //</span>
+            <div className="value status-val">
+               <span className="blink-dot"></span> {status}
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* CSS 스타일 */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        .universal-frame-root {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 16 / 9 !important;
+          background-color: #000;
+          overflow: hidden;
+          font-family: 'Share Tech Mono', monospace;
+          color: white;
+          border: 1px solid #333;
+          user-select: none;
+          box-shadow: 0 0 50px rgba(255, 51, 51, 0.2);
+        }
+
+        .bg-image { width: 100%; height: 100%; object-fit: cover; position: absolute; }
+        .vignette { position: absolute; inset: 0; background: radial-gradient(circle, transparent 50%, black 140%); z-index: 2; pointer-events: none; }
+        
+        .ui-full-frame {
+          position: absolute; inset: 0; z-index: 10;
+          pointer-events: none; 
+        }
+
+        .hud-group {
+          position: absolute;
+          display: flex; flex-direction: column; gap: 4px;
+          text-shadow: 0 0 5px rgba(0,0,0,0.8);
+          background: transparent !important;
+        }
+
+        /* [PC] 위치 정밀 보정 (대칭 맞춤) */
+        /* 좌측 요소들을 15px로 설정하여 상하좌우 여백의 균형을 맞춤 */
+        .top-left { top: 15px; left: 15px; align-items: flex-start; }
+        .bottom-left { bottom: 15px; left: 15px; align-items: flex-start; }
+        
+        /* 우측 요소 */
+        .top-right { top: 15px; right: 8px; align-items: flex-end; text-align: right; }
+        
+        /* [PC] 우측 하단 (Veo 가림막) */
+        .bottom-right-armor {
+          bottom: 8px; right: 8px;
+          align-items: flex-end; text-align: right;
+          background: linear-gradient(135deg, rgba(20, 20, 22, 1) 0%, rgba(5, 5, 5, 1) 100%) !important;
+          padding: 12px 10px 12px 18px;
+          border-top: 2px solid var(--theme-color);
+          border-left: 1px solid rgba(255,255,255,0.2);
+          box-shadow: -5px -5px 20px rgba(0,0,0,0.8);
+          z-index: 20;
+        }
+
+        /* 요소 스타일 */
+        .system-status-row {
+          display: flex; align-items: center; gap: 6px;
+          font-size: 11px; color: var(--theme-color); opacity: 0.9; letter-spacing: 1px;
+        }
+        .status-dot { width: 6px; height: 6px; background: var(--theme-color); border-radius: 50%; box-shadow: 0 0 8px var(--theme-color); }
+
+        .headline-box { background: transparent !important; }
+        .header-label { font-size: 10px; color: #888; letter-spacing: 2px; margin-bottom: 0px; }
+        .headline-row { display: flex; align-items: center; justify-content: flex-end; background: transparent !important; }
+        .typing-wrapper {
+          display: inline-block; overflow: hidden; white-space: nowrap; width: 0;
+          animation: type-reveal 1.5s steps(20, end) forwards; 
+        }
+        @keyframes type-reveal { from { width: 0; } to { width: 100%; } }
+        
+        .headline-text {
+          font-size: 32px; font-weight: bold; color: #fff;
+          text-shadow: 0 0 10px var(--theme-color); 
+          letter-spacing: -1px; line-height: 1;
+        }
+        .cursor { animation: blink 1s infinite; opacity: 0.7; margin-left: 3px; font-size: 32px; line-height: 1; color: var(--theme-color); }
+        .classification-row { font-size: 12px; color: #ccc; margin-top: 2px; }
+        .highlight { color: var(--theme-color); font-weight: bold; text-shadow: 0 0 8px var(--theme-color); }
+
+        .info-list { display: flex; flex-direction: column; gap: 2px; }
+        .info-item { display: flex; gap: 6px; align-items: baseline; }
+        .info-item .label { font-size: 10px; color: #888; letter-spacing: 1px; }
+        .info-item .value { font-size: 12px; color: #eee; font-weight: bold; }
+
+        .status-box .label { font-size: 10px; color: #888; letter-spacing: 1px; display: block; margin-bottom: 2px; }
+        .status-box .status-val { display: flex; align-items: center; gap: 6px; font-size: 14px; color: #fff; font-weight: bold; }
+        .blink-dot { width: 6px; height: 6px; background: var(--theme-color); border-radius: 50%; animation: blink 2s infinite; box-shadow: 0 0 8px var(--theme-color); }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* ================================================================== */
+        /* [모바일 최적화] 화면 너비 600px 이하 */
+        /* ================================================================== */
+        @media (max-width: 600px) {
+          /* 좌우 대칭을 위해 left: 8px, right: 8px로 통일 */
+          .top-left { top: 8px; left: 8px; }
+          .bottom-left { bottom: 8px; left: 8px; }
+          .top-right { top: 8px; right: 8px; }
+          .bottom-right-armor { bottom: 5px; right: 5px; padding: 6px 5px 6px 10px; }
+
+          /* 폰트 사이즈 축소 */
+          .system-status-row { font-size: 8px; gap: 4px; }
+          .header-label { font-size: 7px; letter-spacing: 1px; }
+          
+          .headline-text, .cursor { font-size: 18px; text-shadow: 0 0 5px var(--theme-color); }
+          .classification-row { font-size: 8px; margin-top: 1px; }
+          
+          .info-list { gap: 1px; }
+          .info-item .label { font-size: 7px; }
+          .info-item .value { font-size: 9px; }
+          
+          .status-box .label { font-size: 7px; margin-bottom: 1px; }
+          .status-box .status-val { font-size: 10px; gap: 4px; }
+          .blink-dot, .status-dot { width: 4px; height: 4px; }
+        }
+      `}</style>
+    </div>
+  );
+}
